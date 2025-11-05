@@ -1,0 +1,36 @@
+{
+  "title": "products",
+  "description": "This is a jsonschema file defining the table for validating a product record",
+  "type": "object",
+  "properties": {
+    "productkey": {
+      "description": "The unique identifier for the product",
+      "type": "number"
+    },
+    "vendorname": {
+      "description": "The name of the vendor",
+      "type": "string"
+    },
+    "catalogid": {
+      "description": "the id assigned by a vendor in a catalog",
+      "type": "string"
+    },
+    "productdescription": {
+      "description": "The description of the product",
+      "type": "string"
+    }
+  },
+  "required": [
+    "vendorname",
+    "catalogid",
+    "productdescription"
+  ],
+  "additionalProperties": {
+    "primarykeycolumn": "productkey",
+    "uniquecolumns": [
+      "vendorname",
+      "catalogid",
+      "productdescription"
+    ]
+  }
+}
