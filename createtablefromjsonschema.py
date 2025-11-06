@@ -49,5 +49,5 @@ USING DELTA
 
     def create_table(self):
         sql = self.create_table_sql()
-        print(sql)
+        return(sql)
         # spark.sql(sql)

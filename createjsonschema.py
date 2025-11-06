@@ -181,38 +181,38 @@ class schema:
                 # Write back to file
                 return(json.dumps(schema_content))
 
-def test_schema():
-    """Main function"""
-    jsonschema = ''
+# def test_schema():
+#     """Main function"""
+#     jsonschema = ''
     
-    jsonschema = schema("test", jsonschema).create()
-    print('test create object:\n\t' + jsonschema)
+#     jsonschema = schema("test", jsonschema).create()
+#     print('test create object:\n\t' + jsonschema)
     
-    jsonschemadescription = 'This is a jsonschema file defining the table for validating a test record'
-    jsonschema = schema("test", jsonschema).description(jsonschemadescription).modify()
-    print('test modify object description:\n\t' + jsonschema)
+#     jsonschemadescription = 'This is a jsonschema file defining the table for validating a test record'
+#     jsonschema = schema("test", jsonschema).description(jsonschemadescription).modify()
+#     print('test modify object description:\n\t' + jsonschema)
 
-    jsonschema = schema("test", jsonschema).properties("testkey", "The unique identifier for the test", "number").add()
-    print('test add properties:\n\t' + jsonschema)
+#     jsonschema = schema("test", jsonschema).properties("testkey", "The unique identifier for the test", "number").add()
+#     print('test add properties:\n\t' + jsonschema)
 
-    jsonschema = schema("test", jsonschema).properties("testname", "The name for test", "string").add()
-    print('test add properties:\n\t' + jsonschema)
+#     jsonschema = schema("test", jsonschema).properties("testname", "The name for test", "string").add()
+#     print('test add properties:\n\t' + jsonschema)
 
-    jsonschema = schema("test", jsonschema).properties("testdesc", "The description for test", "string").add()
-    print('test add properties:\n\t' + jsonschema)
+#     jsonschema = schema("test", jsonschema).properties("testdesc", "The description for test", "string").add()
+#     print('test add properties:\n\t' + jsonschema)
     
-    jsonschema = schema("test", jsonschema).properties("testdesc").remove()
-    print('test remove properties:\n\t' + jsonschema)
+#     jsonschema = schema("test", jsonschema).properties("testdesc").remove()
+#     print('test remove properties:\n\t' + jsonschema)
 
-    jsonschema = schema("test", jsonschema).required(["testname"]).add()
-    print('test add required:\n\t' + jsonschema)
+#     jsonschema = schema("test", jsonschema).required(["testname"]).add()
+#     print('test add required:\n\t' + jsonschema)
 
-    jsonschema = schema("test", jsonschema).additionalproperties({"primarykeycolumn": "testkey"}).modify()
-    print('test modify additionalproperties:\n\t' + jsonschema)
+#     jsonschema = schema("test", jsonschema).additionalproperties({"primarykeycolumn": "testkey"}).modify()
+#     print('test modify additionalproperties:\n\t' + jsonschema)
 
-    jsonschema = schema("test", jsonschema).additionalproperties({"uniquecolumns": ["testname"]}).modify()
-    print('test modify additionalproperties:\n\t' + jsonschema)
+#     jsonschema = schema("test", jsonschema).additionalproperties({"uniquecolumns": ["testname"]}).modify()
+#     print('test modify additionalproperties:\n\t' + jsonschema)
 
-    return(jsonschema)
+#     return(jsonschema)
 
-print('\nFull jsonschema text:\n' + json.dumps(json.loads(test_schema()), indent=4))
+# print('\nFull jsonschema text:\n' + json.dumps(json.loads(test_schema()), indent=4))
