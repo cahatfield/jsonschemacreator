@@ -12,8 +12,7 @@ class schema:
             self.textstring = self.textstring + json.dumps({
                 "title": self.schemaname,
                 "description": "",
-                "type": "object",
-                "properties": {}   
+                "type": "object"
             })
 
         return(self.textstring)
@@ -33,6 +32,18 @@ class schema:
     def additionalproperties(self, allowed):
         """Return an additionalProperties instance with access to parent schema"""
         return self.AdditionalProperties(self, allowed)
+    
+    def tags(self, tag_name, tag_value):
+        """Return an additionalProperties instance with access to parent schema"""
+        return self.Tags(self, tag_name, tag_value)
+    
+    def catalog(self, catalog_name):
+        """Return an additionalProperties instance with access to parent schema"""
+        return self.Catalog(self, catalog_name)
+    
+    def schema(self, schema_name):
+        """Return an additionalProperties instance with access to parent schema"""
+        return self.Schema(self, schema_name)
     
     class Description:
         def __init__(self, parent_schema, text):
@@ -167,20 +178,114 @@ class schema:
                 # Write back to file
                 return(json.dumps(schema_content))
 
-        def remove(self):
-            """Remove additionalProperties from the schema"""
+        # def remove(self):
+        #     """Remove additionalProperties from the schema"""
+
+        #     if self.parent_schema.textstring != '':
+        #         # Read existing schema
+        #         schema_content = json.loads(self.parent_schema.textstring)
+                
+        #         # Remove additionalProperties
+        #         if "additionalProperties" in schema_content:
+        #             del schema_content["additionalProperties"]
+                
+        #         # Write back to file
+        #         return(json.dumps(schema_content))
+
+    class Tags:
+        def __init__(self, parent_schema, tag_name, tag_value):
+            self.parent_schema = parent_schema
+            self.tag_name = tag_name
+            self.tag_value = tag_value
+
+        def add(self):
+            """Add required properties to the schema"""
 
             if self.parent_schema.textstring != '':
                 # Read existing schema
                 schema_content = json.loads(self.parent_schema.textstring)
                 
-                # Remove additionalProperties
-                if "additionalProperties" in schema_content:
-                    del schema_content["additionalProperties"]
+                # Ensure required array exists
+                if "x-tags" not in schema_content:
+                    schema_content["x-tags"] = {}
+                
+                # Add required properties
+                if self.tag_name not in schema_content["x-tags"]:
+                    schema_content["x-tags"][self.tag_name]=self.tag_value
+                # else:
+                #     schema_content["x-tags"] = [f'{self.tag_name}'+':'+f'{self.tag_value}']
                 
                 # Write back to file
                 return(json.dumps(schema_content))
+            
+    class Catalog:
+        def __init__(self, parent_schema, catalog_name):
+            self.parent_schema = parent_schema
+            self.catalog_name = catalog_name
 
+        def add(self):
+            """Add required properties to the schema"""
+
+            if self.parent_schema.textstring != '':
+                # Read existing schema
+                schema_content = json.loads(self.parent_schema.textstring)
+                
+                # Ensure required array exists
+                schema_content["x-catalog"] = self.catalog_name
+            
+                # Write back to file
+                return(json.dumps(schema_content))
+            
+    class Schema:
+        def __init__(self, parent_schema, schema_name):
+            self.parent_schema = parent_schema
+            self.schema_name = schema_name
+
+        def add(self):
+            """Add required properties to the schema"""
+
+            if self.parent_schema.textstring != '':
+                # Read existing schema
+                schema_content = json.loads(self.parent_schema.textstring)
+                
+                # Ensure required array exists
+                schema_content["x-schema"] = self.schema_name
+            
+                # Write back to file
+                return(json.dumps(schema_content))
+            
+        def modify(self,newschema_name):
+            self.newschema_name = newschema_name
+
+            if self.parent_schema.textstring != '':
+                # Read existing schema
+                schema_content = json.loads(self.parent_schema.textstring)
+                
+                # Update description
+                if "x-schema" in schema_content:
+                    if schema_content["x-schema"] == self.schema_name:
+                        schema_content["x-schema"] = self.newschema_name
+                else:
+                    schema_content["x-schema"] = self.schema_name
+                
+                # Write back to file
+                return(json.dumps(schema_content))        
+            
+        def remove(self):
+            """Remove required properties from the schema"""
+
+            if self.parent_schema.textstring != '':
+                # Read existing schema
+                schema_content = json.loads(self.parent_schema.textstring)
+                
+                # Remove required properties
+                if "x-schema" in schema_content:
+                    if schema_content["x-schema"] == self.schema_name:
+                        del schema_content["x-schema"]
+                
+                # Write back to file
+                return(json.dumps(schema_content))
+                        
 # def test_schema():
 #     """Main function"""
 #     jsonschema = ''
@@ -212,6 +317,12 @@ class schema:
 
 #     jsonschema = schema("test", jsonschema).additionalproperties({"uniquecolumns": ["testname"]}).modify()
 #     print('test modify additionalproperties:\n\t' + jsonschema)
+
+#     jsonschema = schema("test",jsonschema).tags("testkey", "testvalue").add()
+#     print('test add tags:\n\t' + jsonschema)
+
+#     jsonschema = schema("test",jsonschema).tags("testkey2", "testvalue2").add()
+#     print('test add tags:\n\t' + jsonschema)
 
 #     return(jsonschema)
 
